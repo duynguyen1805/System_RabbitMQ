@@ -29,7 +29,9 @@ const connectToRabbitMQForTest = async () => {
     await channel.assertQueue(queueName, {
       durable: true, // crash server > start lại > tiếp tục send a message in the queue
     });
-    await channel.sendToQueue(queueName, Buffer.from(message));
+    await channel.sendToQueue(queueName, Buffer.from(message), {
+      persistent: true, // đi chung với durable
+    });
 
     // close connection
     await connection.close();
